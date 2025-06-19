@@ -4,8 +4,9 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.Objects;
 
-@Data
+
 @Getter
 @Setter
 public class Cell {
@@ -15,7 +16,6 @@ public class Cell {
     public Cell(int x, int y ){
         this.x = x;
         this.y = y;
-        this.id = 1;
     }
 //    final Image image;
 //
@@ -31,5 +31,17 @@ public class Cell {
                 ", y=" + y +
                 ", x=" + x +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Cell cell = (Cell) o;
+        return x == cell.x && y == cell.y;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(x, y, id);
     }
 }

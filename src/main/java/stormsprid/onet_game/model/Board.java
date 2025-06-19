@@ -1,5 +1,7 @@
 package stormsprid.onet_game.model;
 
+import lombok.Getter;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
@@ -10,13 +12,20 @@ import java.util.List;
 
 public class Board {
     int borderId = -1;
+
+    @Getter
+
     int HEIGHT = 10;
+    @Getter
+
     int WIDTH = 20;
+    @Getter
     char BLOCK = '□';
     List<List<Cell>> cells = new ArrayList<>();
 
-
-
+public Cell getCell(int x,int y){
+   return cells.get(x).get(y);
+}
     public void initialize(){
         for(int i = 0; i < HEIGHT; i++){
             List<Cell> row = new ArrayList<>();
@@ -47,11 +56,7 @@ public class Board {
 
        for(List<Cell> row:cells){
            for(Cell cell:row){
-               if(cell.getId()==borderId){
-                   System.out.print(BLOCK+" ");
-               } else{
-                   System.out.print(cell.getId() + " " );
-               }
+               System.out.printf("%2s ", (cell.getId() == -1 ? "□" : cell.getId()));
            }
            System.out.println();
 
@@ -73,13 +78,27 @@ public class Board {
         if(fillableCells.size()%2!=0){
             throw new IllegalArgumentException("Odd number of cells");
         }
-        Collections.shuffle(fillableCells);
+        //Collections.shuffle(fillableCells);
         int pairId = 1;
         for(int i = 0;i <fillableCells.size();i+=2){
             fillableCells.get(i).id = pairId;
             fillableCells.get(i+1).id = pairId;
             pairId++;
             }
+        }
+        public List<List<Cell>> getListOfCells(){
+        return cells;
+        }
+
+
+        public boolean canConnect(Cell a,Cell b){
+            if (a.id!=b.id){
+                return false;
+            }
+            if(a.getX() == b.getX() && a.getY() == b.getY()){
+              return false;
+            }
+            return true;
         }
     }
 
