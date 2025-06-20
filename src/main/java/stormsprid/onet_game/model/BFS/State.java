@@ -8,7 +8,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class State {
-    int x,y;
+    int y,x;
     Direction dir;
     int turns;
 

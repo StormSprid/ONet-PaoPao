@@ -1,0 +1,84 @@
+/* Центрирование экрана */
+body {
+    background-image: url("/images/background.jpg");
+    /* путь к картинке */
+    background-size: cover; /* или contain */
+    background-position: center;
+    background-repeat: no-repeat;
+    height: 100vh;                    /* 100% высоты окна */
+    width: 100vw;
+
+}
+body, html {
+    height: 100%;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #f3f3f3;
+}
+#navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #222;
+    color: white;
+    padding: 10px 20px;
+    font-size: 18px;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+/* Кнопка */
+#navbar button {
+    background-color: #4CAF50;
+    border: none;
+    color: white;
+    padding: 8px 16px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#navbar button:hover {
+    background-color: #45a049;
+}
+
+/* Поле с жизнями */
+#lives {
+    font-size: 18px;
+}
+
+/* Обертка доски */
+#container {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+#board {
+    display: grid;
+    grid-template-columns: repeat(22, 40px); /* 22 — ширина доски */
+    gap: 2px;
+}
+
+.cell {
+    width: 40px;
+    height: 40px;
+    background-color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    border: 1px solid #ccc;
+}
+
+.selected {
+    outline: 2px solid red;
+}
+.pokemon-img {
+
+    image-rendering: pixelated;
+    pointer-events: none; /* ← вот это отключает перехват клика */
+}

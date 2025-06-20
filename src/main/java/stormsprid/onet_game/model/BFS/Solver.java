@@ -26,18 +26,18 @@
             for (Direction dir : Direction.values()) {
                 Cell next = dir.move(start, board);
                 if (next != null && (next.getId() == -1 || next.equals(finish))) {
-                    queue.add(new State(next.getX(), next.getY(), dir, 0));
+                    queue.add(new State(next.getY(), next.getX(), dir, 0));
                 }
             }
 
             while (!queue.isEmpty()) {
                 State state = queue.poll();
-                int x = state.x;
                 int y = state.y;
+                int x = state.x;
                 Direction dir = state.dir;
                 int turns = state.turns;
 
-                if (turns > 2) continue;
+                if (turns > 3) continue;
                 if (x < 0 || x >= board.getWIDTH() || y < 0 || y >= board.getHEIGHT()) continue;
                 if (visited[y][x][dir.ordinal()]) continue;
 
@@ -55,7 +55,7 @@
                     Cell next = newDir.move(current, board);
 
                     if (next != null && (next.getId() == -1 || next.equals(finish))) {
-                        queue.add(new State(next.getX(), next.getY(), newDir, newTurns));
+                        queue.add(new State(next.getY(), next.getX(), newDir, newTurns));
                     }
                 }
             }
