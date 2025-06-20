@@ -14,43 +14,59 @@
             this.board = board;
         }
 
-        public void initialize(Cell a){
-            queue.add(new State(a.getX(),a.getY(),Direction.UP,0));
-            queue.add(new State(a.getX(),a.getY(),Direction.RIGHT,0));
-            queue.add(new State(a.getX(),a.getY(),Direction.DOWN,0));
-            queue.add(new State(a.getX(),a.getY(),Direction.LEFT,0));
 
-        }
-        public void perform(Cell finish) {
-            System.out.println("Start searching>>>");
-            System.out.println("Finish: " + finish.getX() + " " + finish.getY());
+        public boolean perform(Cell start, Cell finish) {
+            if (areAdjacent(start, finish)) {
+                return true;
+            }
 
-            while (!queue.isEmpty()) {
-                State state = queue.poll();
-                Cell current = new Cell(state.x, state.y);
-                System.out.println("Current Cell: " + current.getX() + " " + current.getY());
+            boolean[][][] visited = new boolean[board.getHEIGHT()][board.getWIDTH()][4];
 
-                Cell next = state.dir.move(current, board);
-
-                while (next != null) {
-                    // ✅ Проверка цели — вне зависимости от id
-                    if (next.equals(finish)) {
-                        System.out.println("Solution found!");
-                        return;
-                    }
-
-                    // Двигаемся только по пустым клеткам
-                    if (next.getId() != -1) break;
-
-                    queue.add(new State(next.getX(), next.getY(), state.dir, state.turns));
-                    System.out.println("Move To: " + next.getX() + " " + next.getY());
-
-                    next = state.dir.move(next, board);
+            // Инициализируем очередь с 4 направлениями от стартовой ячейки
+            for (Direction dir : Direction.values()) {
+                Cell next = dir.move(start, board);
+                if (next != null && (next.getId() == -1 || next.equals(finish))) {
+                    queue.add(new State(next.getX(), next.getY(), dir, 0));
                 }
             }
 
-            System.out.println("No solution found.");
+            while (!queue.isEmpty()) {
+                State state = queue.poll();
+                int x = state.x;
+                int y = state.y;
+                Direction dir = state.dir;
+                int turns = state.turns;
+
+                if (turns > 2) continue;
+                if (x < 0 || x >= board.getWIDTH() || y < 0 || y >= board.getHEIGHT()) continue;
+                if (visited[y][x][dir.ordinal()]) continue;
+
+                visited[y][x][dir.ordinal()] = true;
+
+                Cell current = board.getCell(x, y);
+
+                // ✅ ВАЖНО: если добрались до finish, значит соединение возможно
+                if (current.equals(finish)) {
+                    return true;
+                }
+
+                for (Direction newDir : Direction.values()) {
+                    int newTurns = (newDir == dir) ? turns : turns + 1;
+                    Cell next = newDir.move(current, board);
+
+                    if (next != null && (next.getId() == -1 || next.equals(finish))) {
+                        queue.add(new State(next.getX(), next.getY(), newDir, newTurns));
+                    }
+                }
+            }
+
+// ❌ Если ничего не нашли
+            return false;
         }
+        private boolean areAdjacent(Cell a, Cell b) {
+            int dx = Math.abs(a.getX() - b.getX());
+            int dy = Math.abs(a.getY() - b.getY());
 
-
-    }
+            return (dx == 1 && dy == 0) || (dx == 0 && dy == 1);
+        }
+        }

@@ -42,6 +42,6 @@ public class Cell {
 
     @Override
     public int hashCode() {
-        return Objects.hash(x, y, id);
+        return Objects.hash(x, y);
     }
 }

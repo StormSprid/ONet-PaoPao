@@ -17,16 +17,12 @@ public class OnetGameApplication {
         board.initialize();
 
         board.fillWithPairs();
-        Cell a = new Cell(1,1);
-        Cell b = new Cell(1,2);
-        Cell c = new Cell(1,5);
-        board.getCell(b.getX(),b.getY()).setId(-1);
-        board.getCell(c.getX(),c.getY()).setId(1);
         board.print();
-        Solver solver = new Solver(board);
-        solver.initialize(a);
+        Cell a = board.getCell(17, 1);
 
-        solver.perform(c);
+        Cell b = board.getCell(18, 1);
+        System.out.println(b.getId() + " " + a.getId());
+        board.canConnect(a, b);
+
     }
-
 }
