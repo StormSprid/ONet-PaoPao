@@ -13,7 +13,11 @@ function renderBoard(board) {
             if (cell.id === -1) {
                 cellDiv.style.backgroundColor = "black";
             } else {
-                cellDiv.textContent = cell.id;
+                const img = document.createElement("img");
+                img.src = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${cell.id}.png`;
+                img.alt = `Pokemon ${cell.id}`;
+                img.className = "pokemon-img";
+                cellDiv.appendChild(img);
                 hasAliveCells = true; // нашли живую клетку
             }
 
